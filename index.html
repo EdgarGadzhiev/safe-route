@@ -298,13 +298,11 @@ textarea{font:inherit;color:var(--ink);background:#f4f7fc;border:1px solid var(-
 .mapbox{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(250px,1fr);gap:18px;align-items:start}
 .mapwrap{position:relative;background:linear-gradient(160deg,#f3f7fe,#e8eff9);border-radius:16px;padding:6px;border:1px solid #dde7f5}
 .msvg{display:block;width:100%;height:auto}
-.msvg .rg{stroke:#fff;stroke-width:1.1;stroke-linejoin:round;cursor:pointer;transition:fill .25s,stroke .12s,filter .12s}
-.msvg .rg:hover,.msvg .rg:focus-visible,.msvg .rg.sel{stroke:var(--ink);stroke-width:2.2;filter:brightness(.93);outline:0}
-.msvg .rg.city{stroke:#14213d;stroke-width:1.4}
-.msvg .bub{fill:#eb6834;fill-opacity:.88;stroke:#fff;stroke-width:2;cursor:pointer;transition:r .2s,fill-opacity .12s}
+.msvg .rg{stroke:#fff;stroke-width:1px;stroke-linejoin:round;cursor:pointer;transition:fill .25s,filter .12s}
+.msvg .rg:hover,.msvg .rg:focus-visible{filter:brightness(.94);outline:0}
+.msvg .rg.city{stroke:#14213d;stroke-width:1.3px}
+.msvg .bub{fill:#eb6834;fill-opacity:.9;stroke:#fff;stroke-width:2px;cursor:pointer;transition:fill-opacity .12s}
 .msvg .bub:hover,.msvg .bub:focus-visible,.msvg .bub.sel{fill-opacity:1;stroke:#14213d;outline:0}
-.msvg text{font-size:12px;font-weight:650;fill:#14213d;paint-order:stroke;stroke:rgba(255,255,255,.92);stroke-width:3.4px;stroke-linejoin:round;pointer-events:none;font-family:var(--font)}
-.msvg text.cl{font-size:13px}
 .mleg{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:11.5px;color:var(--ink2);padding:8px 6px 2px}
 .mleg span{display:inline-flex;align-items:center;gap:6px}
 .mleg i{display:inline-block;width:18px;height:11px;border-radius:3px;border:1px solid rgba(20,33,61,.12)}
@@ -376,6 +374,74 @@ tbody tr{transition:background .12s}
 }
 @media(max-width:900px){.bar{position:static}}
 @media print{.side,.burger,.bar{display:none!important}}
+
+/* =====================================================================
+   v3: комфорт чтения, понятная карта, подсказки «как читать»
+   ===================================================================== */
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+:root{--muted:#586482;--ink2:#3a4866}
+body{font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.src{font-size:12.5px}
+.card p.note{font-size:14px;line-height:1.6}
+.page{gap:18px}
+.card{padding:20px 22px 22px;gap:16px}
+.grid2{gap:16px}
+table{font-size:14px}
+th,td{padding:11px 12px}
+tbody tr:nth-child(even){background:#fafcff}
+tbody tr:hover{background:#f0f6ff}
+input,select{min-height:42px}
+.btn{min-height:40px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.how{background:#f3f8ff;border:1px solid #d9e7fb;border-left:4px solid var(--s1);border-radius:12px;padding:11px 14px;font-size:13px;color:var(--ink2);line-height:1.6}
+.how b{color:var(--ink)}
+.hb{gap:2px}
+.hr{margin:0 -8px;padding:8px 8px 9px}
+.hr .top2{font-size:14px}
+.nav{font-size:14.5px;padding:10px 12px}
+.phead .sub{max-width:80ch;line-height:1.6}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#c5d2e8;border-radius:8px;border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:#a9bbdb;background-clip:content-box;border:2px solid transparent}
+
+/* карта: масштаб, перетаскивание, подписи */
+.mapwrap{position:relative;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.mapwrap.zoomed{cursor:grab;touch-action:none}
+.mapwrap.drag,.mapwrap.drag .rg,.mapwrap.drag .bub{cursor:grabbing}
+.mctl{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.mctl button{width:38px;height:38px;border-radius:11px;border:1px solid #cfdcf0;background:#fff;box-shadow:0 2px 8px rgba(20,33,61,.12);font-size:21px;line-height:1;cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:background .12s,transform .12s}
+.mctl button:hover:not(:disabled){background:#eaf2fd;transform:translateY(-1px)}
+.mctl button:disabled{opacity:.4;cursor:default}
+.mzoomnote{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.92);border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700;color:var(--ink2);box-shadow:0 1px 4px rgba(20,33,61,.12)}
+.mzoomnote:empty{display:none}
+.msvg .hl{stroke:#14213d;stroke-width:2.6px;stroke-linejoin:round;pointer-events:none}
+.msvg .ml{font-family:var(--font);font-weight:650;fill:#14213d;paint-order:stroke;stroke:rgba(255,255,255,.95);stroke-linejoin:round;pointer-events:none}
+.msvg .ml.on{font-weight:800}
+.mleg b{font-weight:650;color:var(--ink)}
+.mleg .lb{margin-left:4px}
+.mnote{font-size:12.5px;color:var(--muted);margin-top:8px}
+.mapbox{grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr)}
+.rank{max-height:300px}
+.rank button{grid-template-columns:24px minmax(0,1fr) auto auto;font-size:13.5px;padding:7px 9px}
+.rank button.pin .no{color:var(--s1)}
+.rank button.pin .nm{font-weight:700}
+.msel .st{font-size:13px}
+
+/* спарклайн в «Очагах аварийности» */
+.spark{display:block;margin-left:auto;overflow:visible}
+
+/* кнопка «Наверх» */
+.totop{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:0;background:linear-gradient(135deg,#2a78d6,#6250d6);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 22px rgba(42,120,214,.45);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
+.totop.on{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{filter:brightness(1.08)}
+
+.how ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.bar{background:#fff}
+@media(max-width:900px){.mapbox,.fbgrid{grid-template-columns:minmax(0,1fr)}}
+.hh{align-items:flex-end;line-height:1.25}.hh .vals u:nth-child(3){min-width:72px}.hr .vals .rt{min-width:72px}
+@media(max-width:520px){.hh .vals u:nth-child(3),.hr .vals .rt{min-width:60px}}
+.heat{grid-template-columns:34px repeat(24,1fr)}.heat .rl{font-weight:600;color:var(--ink2)}
 </style>
 </head><body>
 
@@ -472,7 +538,9 @@ const IC={
  table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/>',
  list:'<path d="M8 6h13M8 12h13M8 18h13M3.500 6h.01M3.500 12h.01M3.500 18h.01"/>',
  chat:'<path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.3A8 8 0 1 1 21 12z"/><path d="M8.500 11h7M8.500 14h4"/>',
- down:'<path d="m6 9 6 6 6-6"/>'
+ down:'<path d="m6 9 6 6 6-6"/>',
+ fit:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+ up:'<path d="m6 15 6-6 6 6"/>'
 };
 const ico=(k,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]}</svg>`;
 const REDUCED=matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -516,6 +584,7 @@ function showTip(e,html){tip.innerHTML=html;tip.classList.add('on');
   tip.style.left=Math.max(8,x)+'px';tip.style.top=Math.max(8,y)+'px';}
 function hideTip(){tip.classList.remove('on')}
 function bindTip(el,html){
+  el.setAttribute('data-tip','');
   el.addEventListener('mousemove',e=>showTip(e,html));el.addEventListener('mouseleave',hideTip);
   el.addEventListener('focus',()=>{const r=el.getBoundingClientRect();showTip({clientX:r.left+r.width/2,clientY:r.top},html)});
   el.addEventListener('blur',hideTip);el.addEventListener('click',e=>showTip(e,html));
@@ -569,7 +638,9 @@ $('logout').onclick=()=>{user=null;try{sessionStorage.removeItem('bm-user')}catc
 function openSide(){$('side').classList.add('open');$('scrim').classList.add('on');$('burger').setAttribute('aria-expanded','true')}
 function closeSide(){$('side').classList.remove('open');$('scrim').classList.remove('on');$('burger').setAttribute('aria-expanded','false')}
 $('burger').onclick=openSide;$('scrim').onclick=closeSide;
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSide()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSide();hideTip()}});
+document.addEventListener('click',e=>{if(!e.target.closest('[data-tip]'))hideTip()});
+addEventListener('scroll',hideTip,{passive:true});
 function buildNav(cur){
   const a=ACC[user];let html='',lastG=null;
   ORDER.filter(v=>a.views.includes(v)).forEach(v=>{const m=VIEWS[v];
@@ -617,7 +688,7 @@ function countUps(){
   if(REDUCED)return;
   document.querySelectorAll('.kpi .v[data-raw]').forEach(el=>{
     const raw=el.dataset.raw;if(raw==='')return;const end=+raw,t0=performance.now(),dur=700;
-    const step=t=>{const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=fmt(end*e);if(k<1)requestAnimationFrame(step);else el.textContent=fmt(end)};
+    const step=t=>{const k=Math.max(0,Math.min(1,(t-t0)/dur)),e=1-Math.pow(1-k,3);el.textContent=fmt(end*e);if(k<1)requestAnimationFrame(step);else el.textContent=fmt(end)};
     requestAnimationFrame(step);
   });
 }
@@ -683,51 +754,142 @@ function aggRows(rows){
 }
 const aggPeriod=()=>aggRows(D.rows.filter(r=>{const y=+r[0].slice(0,4)-Y0;return y>=from&&y<=to}));
 const RAMP=['#e3eefc','#bdd5f6','#86b2ec','#4a86dc','#1b53b0'];
-/* Рисует карту в el. agg — {ключ:{n,d,j}}, metric — 'n' (ДТП) или 'd' (погибшие) */
+/* Рисует интерактивную карту в el. agg — {ключ:{n,d,j}}, metric — 'n' (ДТП) или 'd' (погибшие).
+   Возможности: подсказки при наведении, закрепление выбора, приближение (кнопки, двойной щелчок, Ctrl+колесо),
+   перетаскивание, подписи без наложений, рейтинг территорий. */
+const MAP_HOW='Чем темнее район, тем больше ДТП. Наведите курсор — появятся цифры, нажмите — выбор закрепится. Кнопки «+» и «−» или двойной щелчок приближают карту, перетаскивание сдвигает её.';
 function mapInto(el,agg,metric){
   const unit=metric==='n'?'ДТП':'погибших';
   const total=Object.values(agg).reduce((s,o)=>s+o.n,0)||1;
   const totM=Object.values(agg).reduce((s,o)=>s+o[metric],0)||1;
   const V=k=>(agg[k]&&agg[k][metric])||0;
+  /* классы раскраски: уникальные верхние границы по квантилям */
   const pos=RKEYS.map(V).filter(v=>v>0).sort((a,b)=>a-b);
-  const q=[.2,.4,.6,.8].map(p=>pos[Math.min(pos.length-1,Math.floor(p*pos.length))]||0);
-  const cls=v=>v<=0?-1:v<=q[0]?0:v<=q[1]?1:v<=q[2]?2:v<=q[3]?3:4;
-  const fill=k=>{const c=cls(V(k));return c<0?'#f1f4f9':RAMP[c]};
-  const ranked=RKEYS.map(k=>({k,v:V(k)})).sort((a,b)=>b.v-a.v);
+  let br=[];
+  if(pos.length){br=[...new Set([.2,.4,.6,.8].map(p=>pos[Math.min(pos.length-1,Math.floor(p*pos.length))]).concat(pos[pos.length-1]))].sort((a,b)=>a-b)}
+  const nc=br.length,colOf=i=>RAMP[nc<=1?3:Math.round(i*4/(nc-1))];
+  const cls=v=>v<=0?-1:br.findIndex(b=>v<=b);
+  const fill=k=>{const c=cls(V(k));return c<0?'#eef1f6':colOf(c)};
+  const ranked=RKEYS.map(k=>({k,v:V(k)})).sort((a,b)=>b.v-a.v||RN[a.k].localeCompare(RN[b.k],'ru'));
   const rank=k=>ranked.findIndex(x=>x.k===k)+1;
   const geo=['tyumen_c','tob_c','ish_c'];
-  const keyOf=id=>id==='yalut_c'?'yalut':id;
-  const polys=Object.entries(MAP.r).filter(([id])=>!geo.includes(id)).map(([id,r])=>({id,k:keyOf(id),r}));
+  const polys=Object.entries(MAP.r).filter(([id])=>!geo.includes(id)).map(([id,r])=>({id,k:id==='yalut_c'?'yalut':id,r}));
   const cityPolys=geo.map(id=>({id,k:id,r:MAP.r[id]}));
-  const pathHtml=(p,c='')=>`<path class="rg ${c}" data-k="${p.k}" d="${p.r.d}" fill="${fill(p.k)}" fill-rule="evenodd" tabindex="0" role="img" aria-label="${esc(RN[p.k])}: ${fmt(V(p.k))} ${unit}"/>`;
+  const dOf=k=>(k==='yalut'?['yalut','yalut_c']:[k]).map(i=>MAP.r[i].d).join('');
+  const pathHtml=(p,c='')=>`<path class="rg ${c}" vector-effect="non-scaling-stroke" data-k="${p.k}" d="${p.r.d}" fill="${fill(p.k)}" fill-rule="evenodd" tabindex="0" role="img" aria-label="${esc(RN[p.k])}: ${fmt(V(p.k))} ${unit}"/>`;
   const maxC=Math.max(...geo.map(V),1);
-  const bubbles=geo.map(k=>{const [x,y]=MAP.city[k],r=7+20*Math.sqrt(V(k)/maxC);return `<circle class="bub" data-k="${k}" cx="${x}" cy="${y}" r="${r.toFixed(1)}" tabindex="0" role="img" aria-label="${esc(RN[k])}: ${fmt(V(k))} ${unit}"/>`}).join('');
-  const lab=[...RKEYS.filter(k=>!geo.includes(k)).map(k=>({k,v:V(k)})).sort((a,b)=>b.v-a.v).slice(0,7).map(o=>o.k)];
-  const labels=lab.map(k=>{const [x,y]=MAP.r[k].c;return `<text x="${x}" y="${y}" text-anchor="middle">${RN[k].replace(' район','')}</text>`}).join('')+
-    geo.map(k=>{const [x,y]=MAP.city[k];return `<text class="cl" x="${x+ (k==='tyumen_c'?-14:14)}" y="${y+4}" text-anchor="${k==='tyumen_c'?'end':'start'}">${RN[k].replace('г. ','')}</text>`}).join('');
-  const legend=RAMP.map((c,i)=>{const a=i===0?1:q[i-1]+1,b=q[i];const t=i===4?`более ${fmt(q[3])}`:(i===0?`до ${fmt(q[0])}`:(a>=b?fmt(b):`${fmt(a)}–${fmt(b)}`));return `<span><i style="background:${c}"></i>${t}</span>`}).join('');
+  const bubR=k=>5+13*Math.sqrt(V(k)/maxC);
+  const bubbles=geo.map(k=>{const [x,y]=MAP.city[k];return `<circle class="bub" vector-effect="non-scaling-stroke" data-k="${k}" cx="${x}" cy="${y}" r="${bubR(k)}" tabindex="0" role="img" aria-label="${esc(RN[k])}: ${fmt(V(k))} ${unit}"/>`}).join('');
+  const legend=br.map((b,i)=>{const a=i===0?1:br[i-1]+1;const t=a>=b?fmt(b):`${fmt(a)}–${fmt(b)}`;return `<span><i style="background:${colOf(i)}"></i>${t}</span>`}).join('');
   const rest=(agg.snt?agg.snt.n:0)+(agg.other?agg.other.n:0);
-  el.innerHTML=`<div class="mapbox"><div><div class="mapwrap"><svg class="msvg" viewBox="0 0 ${MAP.w} ${MAP.h}" role="group" aria-label="Карта Тюменской области: ${unit} по территориям">${polys.map(p=>pathHtml(p)).join('')}${cityPolys.map(p=>pathHtml(p,'city')).join('')}${bubbles}${labels}</svg>
-    <div class="mleg"><b style="font-weight:650">${unit==='ДТП'?'Число ДТП':'Число погибших'}:</b>${legend}<span><i style="background:#f1f4f9"></i>нет данных</span><span><i class="bb"></i>города (размер — число ${unit==='ДТП'?'ДТП':'погибших'})</span></div></div>
-    <p class="mnote" style="margin-top:8px">Не показано на карте: СНТ, прочие города и адреса без указания района — ${fmt(rest)} ДТП (${pc(rest/total*100)}). Для «Прочих районов» территория определена по адресу ДТП.</p></div>
-    <div class="mpanel"><div class="msel" id="msel"></div>
-    <div><div class="eyebrow" style="margin-bottom:6px">Рейтинг территорий · ${unit}</div><div class="rank" id="mrank">${ranked.map((o,i)=>`<button type="button" data-k="${o.k}"><span class="no">${i+1}</span><span class="nm">${RN[o.k]}</span><span class="v">${fmt(o.v)}</span><span class="sh">${o.v?pc(o.v/totM*100):'—'}</span></button>`).join('')}</div></div></div></div>`;
-  const tipHtml=k=>{const a=agg[k]||{n:0,d:0,j:0};const sh=a.n/total*100;
-    return `<b>${RN[k]}</b><br>${fmt(a.n)} ДТП · ${pc(sh)} от всех<br>${fmt(a.d)} погибших · ${fmt(a.j)} раненых<br>${a.n?pc(a.d/a.n*100):'0,0%'} погибших на 100 ДТП<br><span style="opacity:.75">${V(k)?rank(k)+'-е место из 25':'ДТП не зарегистрировано'}</span>`};
-  let pinned=ranked[0].k;
-  const panel=k=>{const a=agg[k]||{n:0,d:0,j:0},sh=a.n/total*100;
-    $('msel').innerHTML=`<div class="eyebrow">${geo.includes(k)?'Город':'Район'}</div><h3>${RN[k]}</h3><div class="big">${fmt(a.n)}<small>ДТП · ${pc(sh)} от всех</small></div><div class="share"><i style="width:${Math.min(100,sh)}%"></i></div>
+  const PAD=24,X0=-PAD,Y0v=-PAD,W=MAP.w+2*PAD,H=MAP.h+2*PAD;
+  el.innerHTML=`<div class="mapbox"><div>
+    <div class="mapwrap"><svg class="msvg" viewBox="${X0} ${Y0v} ${W} ${H}" role="group" aria-label="Карта Тюменской области: ${unit} по территориям">
+      <g class="gd">${polys.map(p=>pathHtml(p)).join('')}</g><g class="gc">${cityPolys.map(p=>pathHtml(p,'city')).join('')}</g>
+      <path class="hl" vector-effect="non-scaling-stroke" d="" fill="none" fill-rule="evenodd"/><g class="gb">${bubbles}</g><g class="mlg"></g></svg>
+      <div class="mctl" role="group" aria-label="Масштаб карты"><button type="button" data-z="in" aria-label="Приблизить" title="Приблизить">+</button><button type="button" data-z="out" aria-label="Отдалить" title="Отдалить">−</button><button type="button" data-z="reset" aria-label="Показать всю область" title="Вся область">${ico('fit',16)}</button></div>
+      <div class="mzoomnote" aria-hidden="true"></div></div>
+    <div class="mleg"><b>${unit==='ДТП'?'Число ДТП в районе':'Число погибших в районе'}:</b>${legend||''}<span><i style="background:#eef1f6"></i>нет данных</span><span class="lb"><i class="bb"></i>города — размер круга показывает ${unit}</span></div>
+    <p class="mnote">Не показано на карте: СНТ, прочие города и адреса без указания района — ${fmt(rest)} ДТП (${pc(rest/total*100)}). Для «Прочих районов» территория определена по адресу ДТП.</p></div>
+    <div class="mpanel"><div class="msel" id="msel-${metric}"></div>
+    <div><div class="eyebrow" style="margin-bottom:6px">Рейтинг территорий · ${unit}</div><div class="rank">${ranked.map((o,i)=>`<button type="button" data-k="${o.k}"><span class="no">${i+1}</span><span class="nm">${RN[o.k]}</span><span class="v">${fmt(o.v)}</span><span class="sh">${o.v?pc(o.v/totM*100):'—'}</span></button>`).join('')}</div></div></div></div>`;
+  const svg=el.querySelector('.msvg'),wrap=el.querySelector('.mapwrap'),lg=svg.querySelector('.mlg'),hl=svg.querySelector('.hl'),sel=el.querySelector('.msel');
+  const tipHtml=k=>{const a=agg[k]||{n:0,d:0,j:0};
+    return `<b>${RN[k]}</b><br>${fmt(a.n)} ДТП · ${pc(a.n/total*100)} от всех<br>${fmt(a.d)} погибших · ${fmt(a.j)} раненых<br>${a.n?pc(a.d/a.n*100):'0,0%'} погибших на 100 ДТП<br><span style="opacity:.75">${V(k)?rank(k)+'-е место из 25 по '+(metric==='n'?'числу ДТП':'числу погибших'):'ДТП не зарегистрировано'}</span>`};
+  /* ---- вид: масштаб и сдвиг ---- */
+  let vb={x:X0,y:Y0v,w:W,h:H},target={...vb},pinned=ranked[0].k,shown=pinned,anim=0;
+  const scale=()=>(svg.getBoundingClientRect().width||W)/vb.w;
+  const clampVb=v=>{v.w=Math.min(W,Math.max(W/9,v.w));v.h=v.w*H/W;v.x=Math.min(X0+W-v.w,Math.max(X0,v.x));v.y=Math.min(Y0v+H-v.h,Math.max(Y0v,v.y));return v};
+  const bbox={};
+  svg.querySelectorAll('.rg').forEach(p=>{const k=p.dataset.k;if(!bbox[k]||k==='yalut')bbox[k]=p.getBBox()});
+  function relayout(){
+    const s=scale();
+    const s0=(svg.getBoundingClientRect().width||W)/W,zz=W/vb.w,bf=Math.pow(Math.min(1.3,s0/0.9),.6)/Math.pow(zz,.3);
+    svg.querySelectorAll('.bub').forEach(b=>b.setAttribute('r',(bubR(b.dataset.k)*bf/s).toFixed(2)));
+    wrap.classList.toggle('zoomed',vb.w<W*.98);
+    const z=W/vb.w;el.querySelector('.mzoomnote').textContent=z>1.05?`×${z.toFixed(1).replace('.',',')}`:'';
+    el.querySelector('[data-z="out"]').disabled=z<=1.01;el.querySelector('[data-z="in"]').disabled=z>=8.9;
+    labels();
+  }
+  function applyVb(){svg.setAttribute('viewBox',`${vb.x.toFixed(2)} ${vb.y.toFixed(2)} ${vb.w.toFixed(2)} ${vb.h.toFixed(2)}`);relayout()}
+  function goto(t,instant){
+    t=clampVb({...t});target=t;cancelAnimationFrame(anim);
+    if(REDUCED||instant){vb=t;applyVb();return}
+    const f=vb,t0=performance.now(),dur=260;
+    const step=n=>{const k=Math.max(0,Math.min(1,(n-t0)/dur)),e=1-Math.pow(1-k,3);
+      vb={x:f.x+(t.x-f.x)*e,y:f.y+(t.y-f.y)*e,w:f.w+(t.w-f.w)*e,h:f.h+(t.h-f.h)*e};applyVb();if(k<1)anim=requestAnimationFrame(step)};
+    anim=requestAnimationFrame(step);
+  }
+  function zoomAt(f,cx,cy,instant,base=vb){
+    const w=Math.min(W,Math.max(W/9,base.w/f)),h=w*H/W,rx=(cx-base.x)/base.w,ry=(cy-base.y)/base.h;
+    goto({x:cx-rx*w,y:cy-ry*h,w,h},instant);
+  }
+  function fitRegion(k){
+    let b=bbox[k],cx,cy,w;
+    if(geo.includes(k)){[cx,cy]=MAP.city[k];w=W/4.5}else{cx=b.x+b.width/2;cy=b.y+b.height/2;w=Math.max(b.width*2.1,b.height*2.1*W/H,W/6)}
+    goto({x:cx-w/2,y:cy-w*H/W/2,w,h:w*H/W});
+  }
+  /* ---- подписи без наложений ---- */
+  function labels(){
+    lg.innerHTML='';
+    const s=scale(),fs=12/s,pad=3/s;
+    const placed=[],inView=b=>b.x>=vb.x+2/s&&b.y>=vb.y+2/s&&b.x+b.width<=vb.x+vb.w-2/s&&b.y+b.height<=vb.y+vb.h-2/s;
+    const hit=b=>placed.some(p=>b.x<p.x+p.width+pad&&b.x+b.width+pad>p.x&&b.y<p.y+p.height+pad&&b.y+b.height+pad>p.y);
+    const order=[shown,...geo.filter(k=>k!==shown),...ranked.map(o=>o.k).filter(k=>!geo.includes(k)&&k!==shown)];
+    for(const k of order){
+      const isCity=geo.includes(k),name=isCity?RN[k].replace('г. ',''):RN[k].replace(' район','');
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.textContent=name;t.setAttribute('font-size',fs.toFixed(3));t.setAttribute('stroke-width',(3.4/s).toFixed(3));
+      if(k===shown||k===pinned)t.setAttribute('class','ml on');else t.setAttribute('class','ml');
+      let tries=isCity?[[1,'start'],[-1,'end']]:[[0,'middle']];
+      let ok=false;
+      for(const [side,anchor] of tries){
+        let x,y;
+        if(isCity){const [cx,cy]=MAP.city[k];const r=parseFloat(svg.querySelector(`.bub[data-k="${k}"]`).getAttribute('r'));x=cx+side*(r+4/s);y=cy+4/s}
+        else{[x,y]=MAP.r[k].c;y+=4/s}
+        t.setAttribute('x',x.toFixed(2));t.setAttribute('y',y.toFixed(2));t.setAttribute('text-anchor',anchor);
+        if(!t.parentNode)lg.appendChild(t);
+        const b=t.getBBox();
+        const fits=isCity||k===shown||k===pinned||(bbox[k]&&bbox[k].width>=b.width*.8&&bbox[k].height>=b.height*1.3);
+        if(fits&&inView(b)&&!hit(b)){placed.push(b);ok=true;break}
+      }
+      if(!ok&&t.parentNode)t.remove();
+    }
+  }
+  /* ---- панель выбранной территории ---- */
+  function panel(k){
+    shown=k;const a=agg[k]||{n:0,d:0,j:0},sh=a.n/total*100;
+    sel.innerHTML=`<div class="eyebrow">${geo.includes(k)?'Город':'Район'}${k===pinned?' · выбор закреплён':''}</div><h3>${RN[k]}</h3><div class="big">${fmt(a.n)}<small>ДТП · ${pc(sh)} от всех</small></div><div class="share" title="Доля от всех ДТП региона"><i style="width:${Math.min(100,sh)}%"></i></div>
       <div class="st"><div><b>${fmt(a.d)}</b>погибших</div><div><b>${fmt(a.j)}</b>раненых</div><div><b>${a.n?pc(a.d/a.n*100):'0,0%'}</b>погибших на 100 ДТП</div><div><b>${V(k)?rank(k)+' из 25':'—'}</b>место по ${metric==='n'?'числу ДТП':'числу погибших'}</div></div>`;
-    el.querySelectorAll('.rg,.bub').forEach(x=>x.classList.toggle('sel',x.dataset.k===k));
-    el.querySelectorAll('#mrank button').forEach(x=>x.classList.toggle('sel',x.dataset.k===k));
-  };
-  el.querySelectorAll('.rg,.bub').forEach(x=>{const k=x.dataset.k;bindTip(x,tipHtml(k));
-    x.addEventListener('mouseenter',()=>panel(k));x.addEventListener('focus',()=>panel(k));
-    x.addEventListener('mouseleave',()=>panel(pinned));
-    x.addEventListener('click',()=>{pinned=k;panel(k)});
-    x.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pinned=k;panel(k)}});});
-  el.querySelectorAll('#mrank button').forEach(b=>{b.onclick=()=>{pinned=b.dataset.k;panel(pinned)};b.onmouseenter=()=>panel(b.dataset.k);b.onmouseleave=()=>panel(pinned)});
-  panel(pinned);
+    hl.setAttribute('d',dOf(k));
+    svg.querySelectorAll('.bub').forEach(x=>x.classList.toggle('sel',x.dataset.k===k));
+    el.querySelectorAll('.rank button').forEach(x=>{x.classList.toggle('sel',x.dataset.k===k);x.classList.toggle('pin',x.dataset.k===pinned)});
+  }
+  let dragged=false;
+  svg.querySelectorAll('.rg,.bub').forEach(x=>{const k=x.dataset.k;bindTip(x,tipHtml(k));
+    x.addEventListener('mouseenter',()=>{if(!drag){panel(k);labels()}});x.addEventListener('focus',()=>{panel(k);labels()});
+    x.addEventListener('mouseleave',()=>{if(!drag){panel(pinned);labels()}});
+    x.addEventListener('click',()=>{if(dragged)return;pinned=k;panel(k);labels()});
+    x.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pinned=k;panel(k);labels()}})});
+  el.querySelectorAll('.rank button').forEach(b=>{
+    b.onclick=()=>{pinned=b.dataset.k;panel(pinned);fitRegion(pinned)};
+    b.onmouseenter=()=>{panel(b.dataset.k);labels()};b.onmouseleave=()=>{panel(pinned);labels()}});
+  el.querySelectorAll('.mctl button').forEach(b=>b.onclick=()=>{
+    const z=b.dataset.z,cx=target.x+target.w/2,cy=target.y+target.h/2;
+    if(z==='in')zoomAt(1.8,cx,cy,false,target);else if(z==='out')zoomAt(1/1.8,cx,cy,false,target);else goto({x:X0,y:Y0v,w:W,h:H})});
+  /* перетаскивание и двойной щелчок */
+  let drag=null;
+  wrap.addEventListener('pointerdown',e=>{if(e.target.closest('.mctl')||e.button>0)return;drag={x:e.clientX,y:e.clientY,vx:vb.x,vy:vb.y,moved:false}});
+  wrap.addEventListener('pointermove',e=>{
+    if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    if(!drag.moved&&Math.hypot(dx,dy)>5&&vb.w<W*.995){drag.moved=true;wrap.classList.add('drag');hideTip();try{wrap.setPointerCapture(e.pointerId)}catch(x){}}
+    if(drag.moved){cancelAnimationFrame(anim);const s=scale();vb=clampVb({x:drag.vx-dx/s,y:drag.vy-dy/s,w:vb.w,h:vb.h});target={...vb};applyVb()}});
+  const endDrag=()=>{if(drag&&drag.moved){dragged=true;setTimeout(()=>dragged=false,60)}drag=null;wrap.classList.remove('drag')};
+  wrap.addEventListener('pointerup',endDrag);wrap.addEventListener('pointercancel',endDrag);
+  wrap.addEventListener('dblclick',e=>{if(e.target.closest('.mctl'))return;const r=svg.getBoundingClientRect(),s=scale();zoomAt(2,vb.x+(e.clientX-r.left)/s,vb.y+(e.clientY-r.top)/s)});
+  wrap.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();const r=svg.getBoundingClientRect(),s=scale();zoomAt(e.deltaY<0?1.25:.8,vb.x+(e.clientX-r.left)/s,vb.y+(e.clientY-r.top)/s,true)},{passive:false});
+  panel(pinned);relayout();
+  if('ResizeObserver' in window){let w0=svg.getBoundingClientRect().width;new ResizeObserver(()=>{const w=svg.getBoundingClientRect().width;if(Math.abs(w-w0)>2){w0=w;relayout()}}).observe(svg)}
 }
 
 /* ================= АНАЛИТИКА АВАРИЙНОСТИ ================= */
@@ -747,7 +909,7 @@ function vDashboard(){
     <div class="card" style="--hc:#eb6834"><div><h2>Погибшие по годам</h2><div class="src">Человек за год, 2026 — только январь (отмечен *)</div></div><div id="chD"></div></div>
   </section>
   <section class="card" style="--hc:#6250d6">
-    <div class="hd"><div><h2>Где: карта Тюменской области</h2><div class="src">Наведите курсор на район или город, чтобы увидеть подробности. Нажмите, чтобы закрепить выбор.</div></div>${segHtml('kN','kD')}</div>
+    <div class="hd"><div><h2>Где: карта Тюменской области</h2><div class="src">${MAP_HOW}</div></div>${segHtml('kN','kD')}</div>
     <div id="mapBox"></div>
   </section>
   <section class="card">
@@ -755,7 +917,7 @@ function vDashboard(){
     <p class="note" id="heatNote"></p>
     <div class="grid2"><div><div class="eyebrow" style="margin-bottom:8px">По месяцам</div><div id="chM"></div></div><div><div class="eyebrow" style="margin-bottom:8px">По часам суток</div><div id="chH"></div></div></div>
     <button class="btn ghost sm tog" type="button" id="heatBtn" aria-expanded="${heatOpen}" aria-controls="heatWrap"><span id="heatTxt">${heatOpen?'Скрыть':'Раскрыть'} тепловую таблицу: часы и дни недели</span>${ico('down',16)}</button>
-    <div id="heatWrap" ${heatOpen?'':'hidden'}><div class="scroll"><div class="heat" id="heat"></div></div>
+    <div id="heatWrap" ${heatOpen?'':'hidden'}><div class="src">Строки — дни недели, столбцы — час начала ДТП. Чем темнее клетка, тем больше ДТП (или погибших). Наведите курсор на клетку, чтобы увидеть число.</div><div class="scroll"><div class="heat" id="heat"></div></div>
     <div class="ramp"><span>меньше</span><i></i><span>больше</span></div></div>
   </section>
   <section class="grid2">
@@ -826,7 +988,7 @@ function hbars(el,dim,{order,rename,rate=true,exclude=[],only,tail=[],c='var(--s
   let rows=all.filter(r=>r.n>0&&(!only||only.includes(r.k)));
   if(order)rows.sort((a,b)=>order.indexOf(a.k)-order.indexOf(b.k));else rows.sort((a,b)=>tail.includes(a.k)-tail.includes(b.k)||b.n-a.n);
   const max=Math.max(...rows.map(r=>r.n),1);
-  const head=`<div class="hh"><span></span><span class="vals"><u>ДТП</u><u>доля</u>${rate?'<u>погиб. на 100</u>':''}</span></div>`;
+  const head=`<div class="hh"><span></span><span class="vals"><u>ДТП</u><u>доля</u>${rate?'<u>погибших<br>на 100 ДТП</u>':''}</span></div>`;
   el.innerHTML=head+rows.map(r=>`<div class="hr" tabindex="0"><div class="top2"><span>${esc(r.k)}</span><span class="vals"><b>${fmt(r.n)}</b><em class="sh">${pc(r.n/tot*100)}</em>${rate?`<em class="rt">${pc(r.d/r.n*100)}</em>`:''}</span></div><div class="tr" style="--c:${c}"><i style="width:${r.n/max*100}%"></i></div></div>`).join('');
   el.querySelectorAll('.hr').forEach((d,i)=>{const r=rows[i];bindTip(d,`<b>${esc(r.k)}</b><br>${fmt(r.n)} ДТП · ${pc(r.n/tot*100)} от всех<br>${fmt(r.d)} погибших · ${fmt(r.j)} раненых<br>${pc(r.d/r.n*100)} погибших на 100 ДТП`)});
 }
@@ -850,16 +1012,30 @@ function dRender(){
 
 /* ================= ОЧАГИ АВАРИЙНОСТИ ================= */
 let hsType='km',hsMetric='n',hsAll=false;
+const SP={W:110,H:34,n:11};
+const spX=i=>2+i*(SP.W-4)/(SP.n-1);
 function spark(arr){
-  const W=96,H=28,n=11,s=arr.slice(0,n),mx=Math.max(...s,1);
-  const pts=s.map((x,i)=>[+(2+i*(W-4)/(n-1)).toFixed(1),+(H-3-(x/mx)*(H-8)).toFixed(1)]);
-  const e=Math.min(to,10),pe=pts[e];
-  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true"><path d="M${pts[0][0]},${H} L${pts.map(p=>p.join(',')).join(' L')} L${pts[n-1][0]},${H}Z" fill="var(--s1)" opacity=".12"/><polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${pe[0]}" cy="${pe[1]}" r="3" fill="var(--s1)" stroke="#fff" stroke-width="2"/></svg>`;
+  const {W,H,n}=SP,s=arr.slice(0,n),mx=Math.max(...s,1);
+  const pts=s.map((x,i)=>[+spX(i).toFixed(1),+(H-4-(x/mx)*(H-10)).toFixed(1)]);
+  const e=Math.min(to,10),f=Math.min(from,10),pe=pts[e];
+  const line=pts.map(p=>p.join(',')).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" data-v="${s.join(',')}" role="img" aria-label="Число ДТП по годам с 2015 по 2025: ${s.join(', ')}"><rect x="${(spX(f)-3).toFixed(1)}" y="0" width="${(spX(e)-spX(f)+6).toFixed(1)}" height="${H}" rx="4" fill="var(--s1)" opacity=".1"/><line x1="2" x2="${W-2}" y1="${H-2}" y2="${H-2}" stroke="var(--axis)" stroke-width="1"/><path d="M${pts[0][0]},${H-2} L${line.split(' ').join(' L')} L${pts[n-1][0]},${H-2}Z" fill="var(--s1)" opacity=".12"/><polyline points="${line}" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${pe[0]}" cy="${pe[1]}" r="3.4" fill="var(--s1)" stroke="#fff" stroke-width="2"/><circle class="sp-h" r="4" opacity="0" fill="#eb6834" stroke="#fff" stroke-width="2" cx="-9" cy="-9"/><rect x="0" y="0" width="${W}" height="${H}" fill="transparent" style="cursor:crosshair"/></svg>`;
+}
+function bindSparks(root){
+  root.querySelectorAll('.spark').forEach(sv=>{
+    const v=sv.dataset.v.split(',').map(Number),mx=Math.max(...v,1),pk=v.indexOf(mx),h=sv.querySelector('.sp-h');
+    const move=e=>{const r=sv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*SP.W;let i=Math.round((x-2)/((SP.W-4)/(SP.n-1)));i=Math.max(0,Math.min(SP.n-1,i));
+      h.setAttribute('opacity',1);h.setAttribute('cx',spX(i).toFixed(1));h.setAttribute('cy',(SP.H-4-(v[i]/mx)*(SP.H-10)).toFixed(1));
+      showTip(e,`<b>${Y0+i} год</b><br>${v[i]} ДТП на этом участке<br><span style="opacity:.75">пик: ${Y0+pk} год (${v[pk]})</span>`)};
+    sv.addEventListener('mousemove',move);sv.addEventListener('click',move);
+    sv.addEventListener('mouseleave',()=>{h.setAttribute('opacity',0);hideTip()});
+  });
 }
 function vHotspots(){
   $('view').innerHTML=`<div class="phead"><h1>Очаги аварийности</h1><p class="sub">Участки федеральных трасс (по километрам) и улицы Тюмени, где за выбранный период случилось больше всего ДТП. Динамика показывает, растёт ли число аварий на участке.</p></div><div id="pb"></div>
   <section class="card"><div class="hd"><div class="seg" role="group" aria-label="Тип участков"><button type="button" id="tKm" aria-pressed="${hsType==='km'}">Участки трасс</button><button type="button" id="tSt" aria-pressed="${hsType==='st'}">Улицы Тюмени</button></div>
   <div class="seg" role="group" aria-label="Сортировка"><button type="button" id="sN" aria-pressed="${hsMetric==='n'}">По числу ДТП</button><button type="button" id="sD" aria-pressed="${hsMetric==='d'}">По числу погибших</button></div></div>
+  <div class="how"><b>Как читать таблицу</b><ul><li><b>Погибших на 100 ДТП, %</b> — сколько человек погибло в среднем на каждые 100 аварий на участке.</li><li><b>Динамика по годам</b> — мини-график числа ДТП на участке за каждый год с 2015 по 2025: слева 2015 год, справа 2025. Линия идёт вверх к правому краю — аварий становится больше.</li><li>Голубая полоса на графике — выбранный период, точка на линии — его последний год. Наведите курсор на график, чтобы увидеть значение за конкретный год.</li><li>Высота линии считается от максимума самого участка, поэтому график показывает ход изменений. Участки между собой сравнивайте по столбцу «ДТП».</li></ul></div>
   <div class="scroll" id="hsT"></div><div class="src" id="hsNote"></div></section>`;
   $('pb').replaceWith(periodBar(hsRender));
   const set=()=>{$('tKm').setAttribute('aria-pressed',hsType==='km');$('tSt').setAttribute('aria-pressed',hsType==='st');$('sN').setAttribute('aria-pressed',hsMetric==='n');$('sD').setAttribute('aria-pressed',hsMetric==='d');hsRender()};
@@ -875,10 +1051,11 @@ function hsRender(){
   items=items.filter(r=>r.tn>0);
   const lim=hsAll?items.length:15,show=items.slice(0,lim),mx=Math.max(...show.map(r=>hsMetric==='n'?r.tn:r.td),1);
   if(!show.length){$('hsT').innerHTML='<div class="empty"><b>Нет данных за выбранный период</b>Выберите другой период.</div>';$('hsNote').textContent='';return}
-  $('hsT').innerHTML=`<table><thead><tr><th>№</th><th class="tl">Участок</th><th>ДТП</th><th>Погибшие</th><th>Погибших на 100 ДТП, %</th><th>Динамика ’15–’25</th></tr></thead><tbody>${show.map((r,i)=>{
+  $('hsT').innerHTML=`<table><thead><tr><th>№</th><th class="tl">Участок</th><th>ДТП</th><th>Погибшие</th><th>Погибших на 100 ДТП, %</th><th title="Число ДТП на участке по годам, 2015–2025">Динамика по годам<div class="src">2015 → 2025</div></th></tr></thead><tbody>${show.map((r,i)=>{
     const val=hsMetric==='n'?r.tn:r.td;
     return `<tr><td>${i+1}</td><td class="tl"><b>${esc(r.l)}</b><div class="src">${esc(r.sub)}</div></td><td>${fmt(r.tn)}<div class="mini"><i style="width:${val/mx*100}%;background:${hsMetric==='n'?'var(--s1)':'var(--s2)'}"></i></div></td><td>${fmt(r.td)}</td><td>${pc(r.td/r.tn*100)}</td><td>${spark(r.n)}</td></tr>`}).join('')}</tbody></table>
     ${items.length>15?`<div style="padding:12px 0 0"><button class="btn ghost sm" type="button" id="hsMore">${hsAll?'Показать только 15':'Показать все '+items.length}</button></div>`:''}`;
+  bindSparks($('hsT'));
   if($('hsMore'))$('hsMore').onclick=()=>{hsAll=!hsAll;hsRender()};
   $('hsNote').textContent=hsType==='km'?'В списке 50 участков трасс с наибольшим числом ДТП за 2015–2026 годы. Километр взят из адреса ДТП.':'В списке 12 улиц Тюмени с наибольшим числом ДТП за 2015–2026 годы. Линия показывает 2015–2025 годы.';
 }
@@ -942,7 +1119,7 @@ function vDetail(){
       <div class="fld"><label for="dq">Поиск по адресу</label><input id="dq" placeholder="Например, Республики" value="${esc(DET.q)}"></div></div>
     <div class="err" id="derr" role="alert" hidden></div>
     <div class="acts"><button class="btn" type="submit">Найти</button><button class="btn ghost" type="button" id="dreset">Сбросить</button></div></form>
-  <section class="card" id="dmapc" style="--hc:#6250d6" hidden><div class="hd"><div><h2>Карта найденных ДТП</h2><div class="src" id="dmapNote">Наведите курсор на район или город, чтобы увидеть подробности</div></div>${segHtml('dN','dD')}</div><div id="dmap"></div></section>
+  <section class="card" id="dmapc" style="--hc:#6250d6" hidden><div class="hd"><div><h2>Карта найденных ДТП</h2><div class="src" id="dmapNote">${MAP_HOW}</div></div>${segHtml('dN','dD')}</div><div id="dmap"></div></section>
   <section class="card" id="dres" aria-live="polite"></section>`;
   $('ds').value=DET.s;$('dc').value=DET.c;$('dp').value=DET.p;
   $('df').addEventListener('submit',e=>{e.preventDefault();DET.page=0;dGen()});
@@ -956,7 +1133,7 @@ function drawDetMap(){
   const box=$('dmapc');if(!box)return;
   if(!detRows.length){box.hidden=true;return}
   box.hidden=false;mapInto($('dmap'),aggRows(detRows),detMode);
-  $('dmapNote').textContent=`Найдено записей: ${fmt(detRows.length)}. Наведите курсор на район или город, чтобы увидеть подробности.`;
+  $('dmapNote').textContent=`Найдено записей: ${fmt(detRows.length)}. ${MAP_HOW}`;
 }
 function dGen(){
   const a=$('da').value,b=$('db').value,er=$('derr');
@@ -1020,6 +1197,11 @@ function vFeedback(){
     list();toast('Спасибо! Сообщение отправлено.');
   });
 }
+
+/* кнопка «Наверх» */
+const topBtn=document.createElement("button");topBtn.type="button";topBtn.className="totop";topBtn.setAttribute("aria-label","Наверх");topBtn.innerHTML=ico("up",22);
+topBtn.onclick=()=>window.scrollTo({top:0,behavior:REDUCED?"auto":"smooth"});document.body.appendChild(topBtn);
+addEventListener("scroll",()=>topBtn.classList.toggle("on",scrollY>700&&!$("shell").hidden),{passive:true});
 
 route();
 </script>
